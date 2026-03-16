@@ -1,14 +1,42 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 from PySide6.QtCore import QRectF, Qt
 from PySide6.QtGui import QColor, QIcon, QPainter, QPainterPath, QPen, QPixmap
 
 
+def _resolve_icon_path() -> Path | None:
+    candidates: list[Path] = []
+
+    if getattr(sys, "frozen", False):
+        executable = Path(sys.executable).resolve()
+        candidates.extend(
+            [
+                executable.parents[1] / "Resources" / "icon.png",
+                executable.parent / "icon.png",
+            ]
+        )
+
+    module_dir = Path(__file__).resolve().parent
+    candidates.extend(
+        [
+            module_dir / "resources" / "icon.png",
+            module_dir.parents[2] / "icon.png",
+            Path.cwd() / "icon.png",
+        ]
+    )
+
+    for path in candidates:
+        if path.exists():
+            return path
+    return None
+
+
 def load_app_icon() -> QIcon:
-    icon_path = Path(__file__).resolve().parents[2] / "icon.png"
-    if not icon_path.exists():
+    icon_path = _resolve_icon_path()
+    if icon_path is None:
         return QIcon()
 
     source = QPixmap(str(icon_path))

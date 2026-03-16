@@ -1,7 +1,9 @@
 README.md
 pyproject.toml
+setup.py
 src/shunyaku/__init__.py
 src/shunyaku/app.py
+src/shunyaku/assets.py
 src/shunyaku/config.py
 src/shunyaku/hotkey.py
 src/shunyaku/translator.py

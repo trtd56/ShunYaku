@@ -16,6 +16,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from .assets import load_app_icon
+
 
 class TranslationPopup(QWidget):
     closed = Signal()
@@ -24,6 +26,7 @@ class TranslationPopup(QWidget):
         super().__init__()
         self._anchor_pos: QPoint | None = None
         self.setWindowTitle("ShunYaku")
+        self.setWindowIcon(load_app_icon())
         self.setWindowFlags(
             Qt.WindowType.Tool
             | Qt.WindowType.FramelessWindowHint
@@ -151,7 +154,9 @@ class TrayController:
     def __init__(self, app: QApplication, popup: TranslationPopup, on_quit) -> None:
         self._app = app
         self._popup = popup
-        tray_icon = app.style().standardIcon(QStyle.StandardPixmap.SP_ComputerIcon)
+        tray_icon = load_app_icon()
+        if tray_icon.isNull():
+            tray_icon = app.style().standardIcon(QStyle.StandardPixmap.SP_ComputerIcon)
         self._tray = QSystemTrayIcon(tray_icon)
         self._tray.setToolTip("ShunYaku")
 

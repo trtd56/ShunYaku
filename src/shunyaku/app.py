@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QApplication
 from .config import AppConfig
 from .hotkey import DoubleCopyWatcher
 from .translator import TranslationError, Translator
+from .assets import load_app_icon
 from .ui import TranslationPopup, TrayController
 
 
@@ -21,6 +22,7 @@ class ShunYakuApp:
     def __init__(self) -> None:
         self._qt_app = QApplication(sys.argv)
         self._qt_app.setQuitOnLastWindowClosed(False)
+        self._qt_app.setWindowIcon(load_app_icon())
         self._is_shutting_down = False
         self._config = AppConfig()
         self._translator = Translator(self._config)

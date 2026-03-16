@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+src/shunyaku/__init__.py
+src/shunyaku/app.py
+src/shunyaku/config.py
+src/shunyaku/hotkey.py
+src/shunyaku/translator.py
+src/shunyaku/ui.py
+src/shunyaku.egg-info/PKG-INFO
+src/shunyaku.egg-info/SOURCES.txt
+src/shunyaku.egg-info/dependency_links.txt
+src/shunyaku.egg-info/entry_points.txt
+src/shunyaku.egg-info/requires.txt
+src/shunyaku.egg-info/top_level.txt

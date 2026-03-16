@@ -20,6 +20,7 @@ class ShunYakuApp:
     def __init__(self) -> None:
         self._qt_app = QApplication(sys.argv)
         self._qt_app.setQuitOnLastWindowClosed(False)
+        self._is_shutting_down = False
         self._config = AppConfig()
         self._translator = Translator(self._config)
         self._signals = AppSignals()
@@ -34,15 +35,19 @@ class ShunYakuApp:
 
     def run(self) -> int:
         self._tray.show()
+        shortcut = "Cmd+C" if sys.platform == "darwin" else "Ctrl+C"
         self._popup.show_message(
             "起動完了",
-            "ShunYaku は常駐中です。\nCtrl+C または Cmd+C を 2 回押すと翻訳します。",
+            f"ShunYaku は常駐中です。\n{shortcut} を 2 回押すと翻訳します。",
         )
         self._warmup_future = self._translator.warmup_async()
         self._watcher.start()
         return self._qt_app.exec()
 
     def shutdown(self) -> None:
+        if self._is_shutting_down:
+            return
+        self._is_shutting_down = True
         self._watcher.stop()
         self._translator.shutdown()
         self._qt_app.quit()
@@ -85,7 +90,11 @@ class ShunYakuApp:
 
 def main() -> int:
     app = ShunYakuApp()
-    return app.run()
+    try:
+        return app.run()
+    except KeyboardInterrupt:
+        app.shutdown()
+        return 130
 
 
 if __name__ == "__main__":

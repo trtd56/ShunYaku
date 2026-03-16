@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import time
 from collections.abc import Callable
 from threading import Lock
@@ -13,6 +14,7 @@ class DoubleCopyWatcher:
         self._on_trigger = on_trigger
         self._listener: keyboard.Listener | None = None
         self._lock = Lock()
+        self._is_macos = sys.platform == "darwin"
         self._ctrl_pressed = False
         self._cmd_pressed = False
         self._last_copy_at = 0.0
@@ -41,7 +43,7 @@ class DoubleCopyWatcher:
                 self._cmd_pressed = True
                 return
 
-            if not (self._ctrl_pressed or self._cmd_pressed):
+            if not self._copy_modifier_pressed():
                 return
 
             char = getattr(key, "char", None)
@@ -62,3 +64,8 @@ class DoubleCopyWatcher:
                 self._ctrl_pressed = False
             if key in (keyboard.Key.cmd, keyboard.Key.cmd_l, keyboard.Key.cmd_r):
                 self._cmd_pressed = False
+
+    def _copy_modifier_pressed(self) -> bool:
+        if self._is_macos:
+            return self._cmd_pressed
+        return self._ctrl_pressed or self._cmd_pressed

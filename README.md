@@ -70,48 +70,11 @@ python3 -m shunyaku.app
 
 ## macOS 権限
 
-`pynput` によるグローバルキー監視のため、ターミナルまたは実行バイナリにアクセシビリティ権限が必要です。
+`pynput` によるグローバルキー監視のため、起動に使うターミナルにアクセシビリティ権限が必要です。
 
 macOS ではターミナルの `Ctrl+C` が割り込みシグナルと衝突するため、アプリのトリガーには `Cmd+C` のみを使います。
 
 `システム設定 > プライバシーとセキュリティ > アクセシビリティ` で有効化してください。
-
-## macOS アプリとしてビルド
-
-`PyInstaller` で `.app` バンドルを生成できます。
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e ".[build]"
-./scripts/build_macos_app.sh
-```
-
-生成物:
-
-- `dist/ShunYaku.app`
-- `dist/ShunYaku-mac.zip`
-
-このアプリはメニューバー常駐アプリとして配布する前提なので、Dock には常駐しません。
-
-## 署名と公証
-
-社内配布やローカル利用なら未署名でも起動できますが、一般配布するなら Apple Developer 証明書で署名し、公証まで通すべきです。
-
-```bash
-export CODESIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)"
-export APPLE_NOTARY_PROFILE="notarytool-profile-name"
-./scripts/build_macos_app.sh
-```
-
-`APPLE_NOTARY_PROFILE` を使う場合は、事前に以下で認証情報を登録してください。
-
-```bash
-xcrun notarytool store-credentials "notarytool-profile-name" \
-  --apple-id "you@example.com" \
-  --team-id "TEAMID" \
-  --password "app-specific-password"
-```
 
 ## 今後の拡張候補
 

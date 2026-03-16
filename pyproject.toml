@@ -11,12 +11,6 @@ dependencies = [
   "PySide6>=6.9.0",
 ]
 
-[project.optional-dependencies]
-build = [
-  "Pillow>=12.0.0",
-  "pyinstaller>=6.19.0",
-]
-
 [project.scripts]
 shunyaku = "shunyaku.app:main"
 

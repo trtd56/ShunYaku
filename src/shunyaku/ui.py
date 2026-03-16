@@ -56,31 +56,33 @@ class TranslationPopup(QWidget):
         self.setStyleSheet(
             """
             QWidget {
-                background: #101418;
-                color: #f5f7fa;
+                background: #f6f1e8;
+                color: #213047;
                 font-family: "Hiragino Sans";
                 font-size: 14px;
             }
             #statusLabel {
-                color: #8dd3c7;
+                color: #f05a28;
                 font-weight: 600;
             }
             QTextEdit {
-                background: #182028;
-                border: 1px solid #28323d;
+                background: #fffaf2;
+                border: 1px solid #cfd7e6;
                 border-radius: 10px;
                 padding: 10px;
+                selection-background-color: #2f7de1;
+                selection-color: #ffffff;
             }
             QPushButton {
-                background: #8dd3c7;
+                background: #2f7de1;
                 border: none;
                 border-radius: 8px;
-                color: #101418;
+                color: #ffffff;
                 font-weight: 700;
                 min-height: 36px;
             }
             QPushButton:hover {
-                background: #9ce2d7;
+                background: #2467bb;
             }
             """
         )

@@ -4,6 +4,7 @@ import sys
 from concurrent.futures import Future
 
 from PySide6.QtCore import QObject, QTimer, Signal
+from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QApplication
 
 from .config import AppConfig
@@ -56,6 +57,7 @@ class ShunYakuApp:
         self._signals.translation_requested.emit()
 
     def _handle_translation_request(self) -> None:
+        self._popup.set_anchor(QCursor.pos())
         clipboard = self._qt_app.clipboard()
         text = clipboard.text().strip()
         if not text:

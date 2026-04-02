@@ -1,11 +1,12 @@
 # ShunYaku
 
-`LiquidAI/LFM2-350M-ENJP-MT` を使った、英語から日本語専用の常駐翻訳アプリです。常駐中にコピー操作を短時間で 2 回押すと、クリップボード内の英語テキストを翻訳して、選択位置付近にポップアップ表示します。macOS では `Cmd+C` を、その他の環境では `Ctrl+C` を使います。
+`LiquidAI/LFM2-350M-ENJP-MT` を使った、英語から日本語専用の常駐翻訳アプリです。常駐中にコピー操作を短時間で 2 回押すと、クリップボード内の英語テキストを翻訳して、選択位置付近にポップアップ表示します。macOS では `Option+Cmd+T` (`Cmd+Opt+T`) で範囲選択スクリーンショットから OCR 翻訳も実行できます。
 
 ## 構成
 
 - UI: `PySide6`
 - グローバルキー監視: `pynput`
+- OCR: `Vision` / `Quartz` (PyObjC)
 - 推論: `llama-cpp-python`
 - モデル: `LiquidAI/LFM2-350M-ENJP-MT-GGUF`
 
@@ -15,6 +16,8 @@
 - Python 3.11 以上
 - アクセシビリティ権限
   - コピー操作のグローバル監視に必要
+- 画面収録権限
+  - OCR 用の範囲スクリーンショットに必要
 
 ## セットアップ
 
@@ -40,17 +43,28 @@ python3 -m shunyaku.app
 
 ## 使い方
 
+### クリップボード翻訳
+
 1. 英文を選択してコピーする
    - macOS: `Cmd+C`
    - その他: `Ctrl+C`
 2. 続けてもう一度同じキー操作を押す
 3. マウスカーソル付近に、日本語訳の長さに応じたサイズのポップアップが表示される
 
+### OCR 範囲翻訳
+
+1. macOS で `Option+Cmd+T` (`Cmd+Opt+T`) を押す
+2. 標準の範囲選択 UI で翻訳したい領域を選ぶ
+3. 抽出テキストのプレビューが出た後、日本語訳がポップアップ表示される
+4. 選択をキャンセルした場合は何も起きない
+
 ## 動作仕様
 
 - 英語テキストのみを対象とします
 - 連打判定の既定値は 0.75 秒です
 - クリップボードが空、または英字比率が低い場合は翻訳しません
+- OCR は macOS の標準スクリーンショット UI を使います
+- OCR は `en-US` 前提で文字認識します
 - 翻訳中は選択位置付近のポップアップに進捗を表示します
 
 ## 環境変数
@@ -74,9 +88,30 @@ python3 -m shunyaku.app
 
 macOS ではターミナルの `Ctrl+C` が割り込みシグナルと衝突するため、アプリのトリガーには `Cmd+C` のみを使います。
 
-`システム設定 > プライバシーとセキュリティ > アクセシビリティ` で有効化してください。
+OCR 範囲翻訳には `システム設定 > プライバシーとセキュリティ > 画面収録` の許可も必要です。
+
+`システム設定 > プライバシーとセキュリティ > アクセシビリティ` と `画面収録` で有効化してください。
 
 ## 今後の拡張候補
 
 - 自動起動登録
 - 翻訳履歴
+
+## ライセンス
+
+本プロジェクトは [MIT License](LICENSE) のもとで公開しています。
+
+### 依存ライブラリ
+
+| ライブラリ | ライセンス |
+|---|---|
+| PySide6 | LGPL v3 |
+| pynput | LGPL v3 |
+| llama-cpp-python | MIT |
+| huggingface-hub | Apache 2.0 |
+| pyobjc-framework-Quartz | PSF |
+| pyobjc-framework-Vision | PSF |
+
+### モデル
+
+[LiquidAI/LFM2-350M-ENJP-MT](https://huggingface.co/LiquidAI/LFM2-350M-ENJP-MT) は [Liquid Foundation Models License 1.0](https://huggingface.co/LiquidAI/LFM2-350M-ENJP-MT/blob/main/LICENSE) のもとで公開されています。商用利用の可否については同ライセンスをご確認ください。

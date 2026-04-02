@@ -1,2 +1,0 @@
-[console_scripts]
-shunyaku = shunyaku.app:main

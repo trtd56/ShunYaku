@@ -92,11 +92,11 @@ class TranslationPopup(QWidget):
         self.translation_view.setPlainText(body)
         self._show_popup(body)
 
-    def show_loading(self, source_text: str) -> None:
+    def show_loading(self, source_text: str, title: str = "翻訳中...") -> None:
         preview = source_text.strip()
         if len(preview) > 300:
             preview = preview[:300] + "..."
-        self.status_label.setText("翻訳中...")
+        self.status_label.setText(title)
         self.translation_view.setPlainText(preview)
         self._show_popup(preview)
 
